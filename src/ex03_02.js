@@ -44,21 +44,13 @@ export default function example() {
 
   // 그리기
   // Animation
-  const clock = new THREE.Clock();
+  let oldTime = Date.now();
   function draw() {
-    // const time = clock.getElapsedTime(); // 실행 시점으로부터 '총 경과 시간'
-    const delta = clock.getDelta(); // 실행이 될 때마다의 간격, '시간의 차' // getElapsedTime와 getDelta를 함께 사용하면 문제가 된다.
+    const newTime = Date.now();
+    const deltaTime = newTime - oldTime;
+    oldTime = newTime;
 
-    // 각도는 Radian을 사용한다.
-    // 360도는 2파이, 3.14*2 = 6.28
-    // mesh.rotation.y += 0.1;
-    // mesh.rotation.y += THREE.MathUtils.degToRad(1); // degree(360도) 값을 Radian으로 변환한다. -> 1프레임에 1도 변화.
-    // 원래 초당 60프래임으로 움직였으나, 기기 성능(컴퓨터 주사율)마다 프레임 속도가 다르다.
-    // mesh.rotation.y = 2 * time;
-    mesh.position.y += delta;
-    if (mesh.position.y > 3) {
-      mesh.position.y = 0;
-    }
+    mesh.rotation.y += deltaTime * 0.001;
     renderer.render(scene, camera);
 
     window.requestAnimationFrame(draw);
